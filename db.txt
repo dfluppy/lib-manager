@@ -1,0 +1,5 @@
+id=1,title=Название1,author=Автор1,year=1990,status=выдана
+id=2,title=Название2,author=Автор2,year=1991,status=в наличии
+id=3,title=Название3,author=Автор3,year=1992,status=выдана
+id=4,title=Название4,author=Автор4,year=1993,status=в наличии
+id=5,title=Название5,author=Автор5,year=1994,status=выдана
