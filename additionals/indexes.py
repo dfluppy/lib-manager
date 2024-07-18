@@ -1,6 +1,11 @@
 from config import database_path
 
 def reindex(data: list) -> str:
+    """
+    Метод для упорядочивания всех id после удаления записи
+    :param data: данные из БД
+    :return:
+    """
     if not data:
         return
 
