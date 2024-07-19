@@ -1,4 +1,6 @@
-from config import database_path
+from base_classes.checker import Checker
+
+database_path = Checker._check_exists_db()
 
 def reindex(data: list) -> str:
     """

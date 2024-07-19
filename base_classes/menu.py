@@ -1,99 +1,103 @@
 from .library_manager import Library
 from additionals.utils import check_id, space_cls, get_first_to_last_id, get_status
-from config import database_path
+from base_classes.checker import Checker
 
-def console_menu() -> None:
-    """
-    Основной функционал меню программа. Пользователь имеет возможность использовать следующие функции интерфейса:
-    [Insert / Delete / Update / Read]
-    :return: None
-    """
 
-    lib: Library = Library()
-    while True:
-        print("\n▐░░░░░░░ МЕНЮ ░░░░░░░░▌")
-        print("[1] Добавить книгу")
-        print("[2] Удалить книгу")
-        print("[3] Обновить статус книги")
-        print("[4] Вывести все книги")
-        print("[5] Выйти")
+class Menu:
+    def console_menu(self) -> None:
+        """
+        Основной функционал меню программа. Пользователь имеет возможность использовать следующие функции интерфейса:
+        [Insert / Delete / Update / Read]
+        :return: None
+        """
+        database_path = Checker._check_exists_db()
 
-        choice: str = input("\nВыберите действие (1-5): ")
+        lib: Library = Library()
+        while True:
+            print("\n▐░░░░░░░ МЕНЮ ░░░░░░░░▌")
+            print("[1] Добавить книгу")
+            print("[2] Удалить книгу")
+            print("[3] Обновить статус книги")
+            print("[4] Вывести все книги")
+            print("[5] Выйти")
 
-        match choice:
-            case '1':
-                space_cls()
-                try:
-                    title = input("Введите название книги: ")
-                    if not isinstance(title, str) or not title:
-                        raise ValueError('Название книги не может быть пустым, укажите название!')
+            choice: str = input("\nВыберите действие (1-5): ")
 
-                    author = input("Введите автора книги: ")
-                    if not isinstance(author, str) or not author:
-                        raise ValueError('Поле автора не может быть пустым, укажите автора!')
+            match choice:
+                case '1':
+                    space_cls()
+                    try:
+                        title = input("Введите название книги: ")
+                        if not isinstance(title, str) or not title:
+                            raise ValueError('Название книги не может быть пустым, укажите название!')
 
-                    year = int(input("Введите год издания книги: "))
-                    if not isinstance(author, str) or len(str(year)) != 4 or not year:
-                        raise ValueError('Неверно указан год [формат : YYYY]')
+                        author = input("Введите автора книги: ")
+                        if not isinstance(author, str) or not author:
+                            raise ValueError('Поле автора не может быть пустым, укажите автора!')
 
-                    status = get_status(int(input("Укажите статус книги (число) [0: выдана / 1: в наличии]: ")))
-                    print(status)
-                    if not isinstance(author, str) or not status:
-                        raise ValueError('Статус может быть только [0: выдана / 1: в наличии]!')
+                        year = int(input("Введите год издания книги: "))
+                        if not isinstance(author, str) or len(str(year)) != 4 or not year:
+                            raise ValueError('Неверно указан год [формат : YYYY]')
 
-                    lib.add_book(title, author, year, status)
+                        status = get_status(int(input("Укажите статус книги (число) [0: выдана / 1: в наличии]: ")))
+                        print(status)
+                        if not isinstance(author, str) or not status:
+                            raise ValueError('Статус может быть только [0: выдана / 1: в наличии]!')
 
-                except ValueError as ve:
-                    print('Ошибка значения: ', ve)
-                except TypeError as te:
-                    print('Ошибка типа: ', te)
-                except Exception as e:
-                    print('Ошибка: ', e)
+                        lib.add_book(title, author, year, status)
 
-            case '2':
-                space_cls()
-                try:
-                    first_id: int
-                    last_id: int
+                    except ValueError as ve:
+                        print('Ошибка значения: ', ve)
+                    except TypeError as te:
+                        print('Ошибка типа: ', te)
+                    except Exception as e:
+                        print('Ошибка: ', e)
 
-                    first_id, last_id = get_first_to_last_id(database_path)
-                    id = int(input(f"Введите ID книги, которую необходимо удалить [{first_id}...{last_id}]: "))
-                    check_id(id, database_path)
+                case '2':
+                    space_cls()
+                    try:
+                        first_id: int
+                        last_id: int
 
-                    lib.remove_book(id)
-                except IndexError as ie:
-                    print('Ошибка индекса: ', ie)
-                except Exception as e:
-                    print('Ошибка: ', e)
+                        first_id, last_id = get_first_to_last_id(database_path)
+                        id = int(input(f"Введите ID книги, которую необходимо удалить [{first_id}...{last_id}]: "))
+                        check_id(id, database_path)
 
-            case '3':
-                space_cls()
-                try:
-                    first_id: int
-                    last_id: int
+                        lib.remove_book(id)
 
-                    first_id, last_id = get_first_to_last_id(database_path)
-                    id = int(input(f"Введите ID книги [{first_id}...{last_id}]: "))
-                    check_id(id, database_path)
+                    except IndexError as ie:
+                        print('Ошибка индекса: ', ie)
+                    except Exception as e:
+                        print('Ошибка: ', e)
 
-                    status = get_status(int(input("Укажите статус книги (число) [0: выдана / 1: в наличии]: ")))
-                    if not isinstance(status, str) or not status:
-                        raise ValueError('Статус может быть только [0: выдана / 1: в наличии]!')
+                case '3':
+                    space_cls()
+                    try:
+                        first_id: int
+                        last_id: int
 
-                    lib.update_status(id, status)
+                        first_id, last_id = get_first_to_last_id(database_path)
+                        id = int(input(f"Введите ID книги [{first_id}...{last_id}]: "))
+                        check_id(id, database_path)
 
-                except Exception as e:
-                    print('Ошибка: ', e)
+                        status = get_status(int(input("Укажите статус книги (число) [0: выдана / 1: в наличии]: ")))
+                        if not isinstance(status, str) or not status:
+                            raise ValueError('Статус может быть только [0: выдана / 1: в наличии]!')
 
-            case '4':
-                space_cls()
-                try:
-                    lib.get_all_books()
-                except Exception as e:
-                    print('Ошибка: ', e)
-            case '5':
-                print("Завершение программы.")
-                break
+                        lib.update_status(id, status)
 
-            case _:
-                print("Такого варианта не существует. Выберите действие от 1 до 5")
+                    except Exception as e:
+                        print('Ошибка: ', e)
+
+                case '4':
+                    space_cls()
+                    try:
+                        lib.get_all_books()
+                    except Exception as e:
+                        print('Ошибка: ', e)
+                case '5':
+                    print("Завершение программы.")
+                    break
+
+                case _:
+                    print("Такого варианта не существует. Выберите действие от 1 до 5")

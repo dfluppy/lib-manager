@@ -1,23 +1,24 @@
-from config import database_path
 from additionals.converter import str_to_dict
 from additionals.utils import get_last_id
 from additionals.indexes import reindex
 from additionals.decorators_utils import print_table
+from base_classes.checker import Checker
 
+database_path = Checker._check_exists_db()
 
 class Book:
     """
     Класс для описания книг
     """
 
-    __id: int = get_last_id(database_path)
+    __id: int = get_last_id(database_path) # уникальный id для каждой книги
 
     def __init__(self, title: str, author: str, year: int, status: str):
         Book.__id += 1
-        self.title = title
-        self.author = author
-        self.year = year
-        self.status = status
+        self._title = title
+        self._author = author
+        self._year = year
+        self._status = status
 
     @property
     def get_book_id(self) -> int:
@@ -29,25 +30,6 @@ class Library:
     Интерфейс для управления базой данных библиотеки
     """
 
-    # Проверка на существование БД
-
-    def __check_exists_db(self, database: str) -> bool:
-        """
-        Метод для проверки существования файла
-        :param database: данные БД
-        :return: возвращает True если файл/путь найден, False в противном случае
-        """
-
-        try:
-            with open(database):
-                return True
-        except FileNotFoundError:
-            print(f'Файл с именем `{database}` не найден.')
-
-            path_db = input('Укажите пожалуйста путь к базе данных `Например: db.txt`\n')
-            global database_path
-            database_path = path_db
-
     def add_book(self, title: str, author: str, year: int, status: str) -> None:
         """
         Метод добавления новой книги в БД библиотеки
@@ -58,11 +40,11 @@ class Library:
         :return: ничего не возвращает, только добавляет данные если они корректны
         """
 
-        if not self.__check_exists_db(database_path):
-            return
+        # if not Checker._check_exists_db():
+        #     return
 
         book = Book(title, author, year, status)
-        add_data = f'id={book.get_book_id},title={book.title},author={book.author},year={book.year},status={book.status}'
+        add_data = f'id={book.get_book_id},title={book._title},author={book._author},year={book._year},status={book._status}'
         with open(database_path, 'a', encoding='utf-8') as db:
             db.write(add_data + '\n')
 
@@ -73,8 +55,8 @@ class Library:
         :return: ничего не возвращает, только удаляет книгу по id
         """
 
-        if not self.__check_exists_db(database_path):
-            return
+        # if not Checker._check_exists_db():
+        #     return
 
         with open(database_path, 'r+', encoding='utf-8') as db:
             lines = db.readlines()
@@ -97,8 +79,8 @@ class Library:
         :return: ничего не возвращает, только обновляет данные статуса
         """
 
-        if not self.__check_exists_db(database_path):
-            return
+        # if not Checker._check_exists_db():
+        #     return
 
         with open(database_path, 'r+', encoding='utf-8') as db:
             lines = db.readlines()
