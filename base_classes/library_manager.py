@@ -85,7 +85,6 @@ class Library:
                     row = ','.join(part) + '\n'
                 db.write(row)
 
-    # Вывод всех книг в виде таблицы
     @print_table
     def get_all_books(self) -> list:
         """
