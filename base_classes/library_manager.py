@@ -1,5 +1,5 @@
 from additionals.converter import str_to_dict
-from additionals.utils import get_last_id
+from additionals.utils import Utils
 from additionals.indexes import reindex
 from additionals.decorators_utils import print_table
 from base_classes.checker import Checker
@@ -11,7 +11,7 @@ class Book:
     Класс для описания книг
     """
 
-    __id: int = get_last_id(database_path) # уникальный id для каждой книги
+    __id: int = Utils().get_last_id(database_path) # уникальный id для каждой книги
 
     def __init__(self, title: str, author: str, year: int, status: str):
         Book.__id += 1
@@ -32,7 +32,7 @@ class Library:
 
     def add_book(self, title: str, author: str, year: int, status: str) -> None:
         """
-        Метод добавления новой книги в БД библиотеки
+        Метод добавления новой книги в БД библиотеку
         :param title: название книги
         :param author: автор книги
         :param year: год издания
@@ -86,7 +86,7 @@ class Library:
                 db.write(row)
 
     @print_table
-    def get_all_books(self) -> list:
+    def get_all_books(self) -> tuple[dict[str, int | str]]:
         """
         Метод для вывода всех записей из БД
         :return: возвращает список всех записей

@@ -1,6 +1,5 @@
 from .library_manager import Library, database_path
-from additionals.utils import check_id, space_cls, get_first_to_last_id, get_status
-from base_classes.checker import Checker
+from additionals.utils import Utils
 
 
 class Menu:
@@ -12,6 +11,7 @@ class Menu:
         """
 
         lib: Library = Library()
+        utils: Utils = Utils()
 
         while True:
             print("\n▐░░░░░░░ МЕНЮ ░░░░░░░░▌")
@@ -25,7 +25,7 @@ class Menu:
 
             match choice:
                 case '1':
-                    space_cls()
+                    utils.space_cls()
                     try:
                         title = input("Введите название книги: ")
                         if not isinstance(title, str) or not title:
@@ -39,7 +39,7 @@ class Menu:
                         if not isinstance(author, str) or len(str(year)) != 4 or not year:
                             raise ValueError('Неверно указан год [формат : YYYY]')
 
-                        status = get_status(int(input("Укажите статус книги (число) [0: выдана / 1: в наличии]: ")))
+                        status = utils.get_status(int(input("Укажите статус книги (число) [0: выдана / 1: в наличии]: ")))
                         print(status)
                         if not isinstance(author, str) or not status:
                             raise ValueError('Статус может быть только [0: выдана / 1: в наличии]!')
@@ -54,14 +54,14 @@ class Menu:
                         print('Ошибка: ', e)
 
                 case '2':
-                    space_cls()
+                    utils.space_cls()
                     try:
                         first_id: int
                         last_id: int
 
-                        first_id, last_id = get_first_to_last_id(database_path)
+                        first_id, last_id = utils.get_first_to_last_id(database_path)
                         id = int(input(f"Введите ID книги, которую необходимо удалить [{first_id}...{last_id}]: "))
-                        check_id(id, database_path)
+                        utils.check_id(id, database_path)
 
                         lib.remove_book(id)
 
@@ -71,16 +71,16 @@ class Menu:
                         print('Ошибка: ', e)
 
                 case '3':
-                    space_cls()
+                    utils.space_cls()
                     try:
                         first_id: int
                         last_id: int
 
-                        first_id, last_id = get_first_to_last_id(database_path)
+                        first_id, last_id = utils.get_first_to_last_id(database_path)
                         id = int(input(f"Введите ID книги [{first_id}...{last_id}]: "))
-                        check_id(id, database_path)
+                        utils.check_id(id, database_path)
 
-                        status = get_status(int(input("Укажите статус книги (число) [0: выдана / 1: в наличии]: ")))
+                        status = utils.get_status(int(input("Укажите статус книги (число) [0: выдана / 1: в наличии]: ")))
                         if not isinstance(status, str) or not status:
                             raise ValueError('Статус может быть только [0: выдана / 1: в наличии]!')
 
@@ -90,7 +90,7 @@ class Menu:
                         print('Ошибка: ', e)
 
                 case '4':
-                    space_cls()
+                    utils.space_cls()
                     try:
                         lib.get_all_books()
                     except Exception as e:

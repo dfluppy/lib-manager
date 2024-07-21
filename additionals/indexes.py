@@ -1,4 +1,4 @@
-def reindex(db, data: list) -> str:
+def reindex(db: str, data: list) -> str:
     """
     Метод для упорядочивания всех id после удаления записи
     :param data: данные из БД
