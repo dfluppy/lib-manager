@@ -1,4 +1,4 @@
-from .library_manager import Library
+from .library_manager import Library, database_path
 from additionals.utils import check_id, space_cls, get_first_to_last_id, get_status
 from base_classes.checker import Checker
 
@@ -10,9 +10,9 @@ class Menu:
         [Insert / Delete / Update / Read]
         :return: None
         """
-        database_path = Checker._check_exists_db()
 
         lib: Library = Library()
+
         while True:
             print("\n▐░░░░░░░ МЕНЮ ░░░░░░░░▌")
             print("[1] Добавить книгу")

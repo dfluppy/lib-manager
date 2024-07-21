@@ -15,10 +15,8 @@ class Checker:
         while True:
             try:
                 with open(database_path):
+                    print(f'Файл {database_path} успешно найден!')
                     return database_path
             except FileNotFoundError:
                 print(f'Файл с именем `{database_path}` не найден.')
                 database_path = input('Укажите пожалуйста путь к базе данных `Например: db.txt`\n')
-                print(
-                    "\nФайл успешно найден!\n"
-                    "При следующем запуске программы, укажите ранее правильный путь к хранилищу данных формата `.txt` в файле `config.py`")

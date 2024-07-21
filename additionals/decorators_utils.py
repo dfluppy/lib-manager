@@ -1,4 +1,7 @@
 def print_table(func):
+    """
+    Декоратор для оборачивания данных в таблицу
+    """
     def wrapper(*args, **kwargs):
         data = func(*args, **kwargs)
         if data is None:

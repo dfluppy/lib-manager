@@ -1,8 +1,4 @@
-from base_classes.checker import Checker
-
-database_path = Checker._check_exists_db()
-
-def reindex(data: list) -> str:
+def reindex(db, data: list) -> str:
     """
     Метод для упорядочивания всех id после удаления записи
     :param data: данные из БД
@@ -13,7 +9,7 @@ def reindex(data: list) -> str:
 
     sort_data = sorted(data, key=lambda x: int(x['id']))
 
-    with open(database_path, 'w+', encoding='utf-8') as db:
+    with open(db, 'w+', encoding='utf-8') as db:
         first_id = 1
 
         for row in sort_data:

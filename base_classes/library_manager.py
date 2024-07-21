@@ -40,9 +40,6 @@ class Library:
         :return: ничего не возвращает, только добавляет данные если они корректны
         """
 
-        # if not Checker._check_exists_db():
-        #     return
-
         book = Book(title, author, year, status)
         add_data = f'id={book.get_book_id},title={book._title},author={book._author},year={book._year},status={book._status}'
         with open(database_path, 'a', encoding='utf-8') as db:
@@ -55,9 +52,6 @@ class Library:
         :return: ничего не возвращает, только удаляет книгу по id
         """
 
-        # if not Checker._check_exists_db():
-        #     return
-
         with open(database_path, 'r+', encoding='utf-8') as db:
             lines = db.readlines()
             db.seek(0)
@@ -68,7 +62,7 @@ class Library:
                     db.write(line)
 
             db.seek(0)
-            reindex_data = reindex(str_to_dict(db.read()))
+            reindex_data = reindex(database_path, str_to_dict(db.read()))
             str_to_dict(reindex_data)
 
     def update_status(self, id: int, status: str) -> None:
@@ -78,9 +72,6 @@ class Library:
         :param status: присвоение нового статуса
         :return: ничего не возвращает, только обновляет данные статуса
         """
-
-        # if not Checker._check_exists_db():
-        #     return
 
         with open(database_path, 'r+', encoding='utf-8') as db:
             lines = db.readlines()
@@ -103,5 +94,5 @@ class Library:
         """
         with open(database_path, 'r', encoding='utf-8') as db:
             data_read = db.read()
-            reindex_data = reindex(str_to_dict(data_read))
+            reindex_data = reindex(database_path, str_to_dict(data_read))
             return str_to_dict(reindex_data)
